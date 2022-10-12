@@ -13,23 +13,23 @@
             <Layer level="ARTWORK">
 
                 <FontString parentKey="Date" inherits="GameFontHighlightSmall" justifyH="LEFT">
-                    <Size x="150"/>
+                    <Size x="120"/>
                     <Anchors>
-                        <Anchor point="LEFT" x="4" y="0"/>
+                        <Anchor point="LEFT" x="6" y="0"/>
                     </Anchors>
                 </FontString>
 
                 <FontString parentKey="Map" inherits="GameFontHighlightSmall" justifyH="LEFT">
                     <Size x="40"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Date" x="0"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Date"/>
 					</Anchors>
                 </FontString>
 
                 <FontString parentKey="Duration" inherits="GameFontHighlightSmall" justifyH="LEFT">
-                    <Size x="98"/>
+                    <Size x="60"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Map" x="4"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Map"/>
 					</Anchors>
                 </FontString>
 
@@ -68,24 +68,38 @@
 					</Anchors>
                 </Texture>
 
-                <FontString parentKey="Rating" inherits="GameFontHighlightSmall" justifyH="LEFT">
+                <FontString parentKey="MMR" inherits="GameFontHighlightSmall" justifyH="CENTER">
                     <Size x="60"/>
                     <Anchors>
-                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.IconTeamPlayerClass5" x="4"/>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.IconTeamPlayerClass5"/>
                     </Anchors>
                 </FontString>
 
-                <FontString parentKey="MMR" inherits="GameFontHighlightSmall" justifyH="LEFT">
-                    <Size x="40"/>
+                <FontString parentKey="Rating" inherits="GameFontHighlightSmall" justifyH="CENTER">
+                    <Size x="70"/>
                     <Anchors>
-                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Rating" x="8"/>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.MMR"/>
+                    </Anchors>
+                </FontString>
+
+                <FontString parentKey="EnemyRating" inherits="GameFontHighlightSmall" justifyH="CENTER">
+                    <Size x="80"/>
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Rating"/>
+                    </Anchors>
+                </FontString>
+
+                <FontString parentKey="EnemyMMR" inherits="GameFontHighlightSmall" justifyH="CENTER">
+                    <Size x="70"/>
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.EnemyRating"/>
                     </Anchors>
                 </FontString>
 
                 <Texture parentKey="IconEnemyPlayer1">
                     <Size x="20" y="20"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.MMR" x="4"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.EnemyMMR"/>
 					</Anchors>
                 </Texture>
 
@@ -117,17 +131,10 @@
 					</Anchors>
                 </Texture>
 
-                <FontString parentKey="EnemyMMR" inherits="GameFontHighlightSmall" justifyH="LEFT">
-                    <Size x="40"/>
-                    <Anchors>
-                        <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.IconEnemyPlayer5" x="20"/>
-                    </Anchors>
-                </FontString>
-
                 <Texture parentKey="EnemyFaction">
                     <Size x="20" y="20"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.EnemyMMR" x="50"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.IconEnemyPlayer5" x="30"/>
 					</Anchors>
                 </Texture>
 

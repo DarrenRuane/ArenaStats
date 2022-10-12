@@ -29,6 +29,8 @@ L["Enemy Faction"] = "Enemy Faction"
 --[[Translation missing --]]
 L["Enemy MMR"] = "Enemy MMR"
 --[[Translation missing --]]
+L["Enemy Rating"] = "Enemy Rating"
+--[[Translation missing --]]
 L["Enemy Team"] = "Enemy Team"
 --[[Translation missing --]]
 L["Export"] = "Export"
@@ -43,8 +45,6 @@ L["Maximum history records"] = "Maximum history records"
 --[[Translation missing --]]
 L["Minimap Button Settings"] = "Minimap Button Settings"
 --[[Translation missing --]]
-L["MMR"] = "MMR"
---[[Translation missing --]]
 L["Names"] = "Names"
 --[[Translation missing --]]
 L["Opens or closes the main window"] = "Opens or closes the main window"
@@ -53,8 +53,6 @@ L["Options"] = "Options"
 --[[Translation missing --]]
 L["Purge database"] = "Purge database"
 --[[Translation missing --]]
-L["Rating"] = "Rating"
---[[Translation missing --]]
 L["Recorded %i arenas"] = "Recorded %i arenas"
 --[[Translation missing --]]
 L["Right Click"] = "Right Click"
@@ -62,8 +60,6 @@ L["Right Click"] = "Right Click"
 L["Show character names on hover"] = "Show character names on hover"
 --[[Translation missing --]]
 L["Show minimap button"] = "Show minimap button"
---[[Translation missing --]]
-L["Team"] = "Team"
 --[[Translation missing --]]
 L["Tool"] = "Tool"
 --[[Translation missing --]]
@@ -76,4 +72,10 @@ L["to open options"] = "to open options"
 L["to move this button"] = "to move this button"
 --[[Translation missing --]]
 L["Toggle"] = "Toggle"
+--[[Translation missing --]]
+L["Your MMR"] = "Your MMR"
+--[[Translation missing --]]
+L["Your Rating"] = "Your Rating"
+--[[Translation missing --]]
+L["Your Team"] = "Your Team"
 

@@ -122,19 +122,16 @@ function ArenaStats:CreateGUI()
     tableHeader:SetLayout("Flow")
     asGui.f:AddChild(tableHeader)
 
-    local margin = AceGUI:Create("Label")
-    margin:SetWidth(4)
-    tableHeader:AddChild(margin)
-
-    ArenaStats:CreateScoreButton(tableHeader, 145, "Date")
+    ArenaStats:CreateScoreButton(tableHeader, 120, "Date")
     ArenaStats:CreateScoreButton(tableHeader, 40, "Map")
-    ArenaStats:CreateScoreButton(tableHeader, 94, "Duration")
-    ArenaStats:CreateScoreButton(tableHeader, 100, "Team")
-    ArenaStats:CreateScoreButton(tableHeader, 64, "Rating")
-    ArenaStats:CreateScoreButton(tableHeader, 40, "MMR")
+    ArenaStats:CreateScoreButton(tableHeader, 60, "Duration")
+    ArenaStats:CreateScoreButton(tableHeader, 100, "Your Team")
+    ArenaStats:CreateScoreButton(tableHeader, 60, "Your MMR", "CENTER")
+    ArenaStats:CreateScoreButton(tableHeader, 70, "Your Rating", "CENTER")
+    ArenaStats:CreateScoreButton(tableHeader, 80, "Enemy Rating", "CENTER")
+    ArenaStats:CreateScoreButton(tableHeader, 70, "Enemy MMR", "CENTER")
     ArenaStats:CreateScoreButton(tableHeader, 100, "Enemy Team")
-    ArenaStats:CreateScoreButton(tableHeader, 75, "Enemy MMR")
-    ArenaStats:CreateScoreButton(tableHeader, 80, "Enemy Faction")
+    ArenaStats:CreateScoreButton(tableHeader, 80, "Enemy Faction", "CENTER")
 
     -- TABLE
     local scrollContainer = AceGUI:Create("SimpleGroup")
@@ -185,15 +182,12 @@ function ArenaStats:OnArenaTypeChange(key)
     self:UpdateTableView()
 end
 
-function ArenaStats:CreateScoreButton(tableHeader, width, localeStr)
+function ArenaStats:CreateScoreButton(tableHeader, width, localeStr, horizontalJustification)
     local btn = AceGUI:Create("Label")
     btn:SetWidth(width)
     btn:SetText(string.format(" %s ", L[localeStr]))
-    btn:SetJustifyH("LEFT")
+    btn:SetJustifyH(horizontalJustification or "LEFT")
     tableHeader:AddChild(btn)
-    local margin = AceGUI:Create("Label")
-    margin:SetWidth(4)
-    tableHeader:AddChild(margin)
 end
 
 function ArenaStats:FilterRow(row)
@@ -216,10 +210,10 @@ end
 
 function ArenaStats:SortClassTable(a, b)
     -- regular sort, pushes nils to end
-    if (not a or not b) then
-        return not b
-    else
+    if (a and b) then
         return a < b
+    else
+        return not not a
     end
 end
 
@@ -239,24 +233,44 @@ function ArenaStats:RefreshLayout()
             button.Date:SetText(_G.date(L["%F %T"], row["endTime"]))
             button.Map:SetText(self:GetShortMapName(row["zoneId"]))
             button.Duration:SetText(self:HumanDuration(row["duration"]))
-            local teamClasses = {
-                row["teamPlayerClass1"], row["teamPlayerClass2"],
-                row["teamPlayerClass3"], row["teamPlayerClass4"],
-                row["teamPlayerClass5"]
+            
+            local teamData = {
+                { class = row["teamPlayerClass1"], name = row["teamPlayerName1"] },
+                { class = row["teamPlayerClass2"], name = row["teamPlayerName2"] },
+                { class = row["teamPlayerClass3"], name = row["teamPlayerName3"] },
+                { class = row["teamPlayerClass4"], name = row["teamPlayerName4"] },
+                { class = row["teamPlayerClass5"], name = row["teamPlayerName5"] }
             }
-            table.sort(teamClasses, function(a, b)
-                return ArenaStats:SortClassTable(a, b)
+
+            local enemyTeamData = {
+                { class = row["enemyPlayerClass1"], name = row["enemyPlayerName1"] },
+                { class = row["enemyPlayerClass2"], name = row["enemyPlayerName2"] },
+                { class = row["enemyPlayerClass3"], name = row["enemyPlayerName3"] },
+                { class = row["enemyPlayerClass4"], name = row["enemyPlayerName4"] },
+                { class = row["enemyPlayerClass5"], name = row["enemyPlayerName5"] }
+            }
+            
+            table.sort(teamData, function(a, b)
+                return ArenaStats:SortClassTable(a.class, b.class)
+            end)
+
+            table.sort(enemyTeamData, function(a, b)
+                return ArenaStats:SortClassTable(a.class, b.class)
             end)
 
             local teamPlayerNames = {
-                row["teamPlayerName1"], row["teamPlayerName2"],
-                row["teamPlayerName3"], row["teamPlayerName4"],
-                row["teamPlayerName5"]
+                teamData[1]["name"],
+                teamData[2]["name"],
+                teamData[3]["name"],
+                teamData[4]["name"],
+                teamData[5]["name"]
             }
             local enemyPlayerNames = {
-                row["enemyPlayerName1"], row["enemyPlayerName2"],
-                row["enemyPlayerName3"], row["enemyPlayerName4"],
-                row["enemyPlayerName5"]
+                enemyTeamData[1]["name"],
+                enemyTeamData[2]["name"],
+                enemyTeamData[3]["name"],
+                enemyTeamData[4]["name"],
+                enemyTeamData[5]["name"]
             }
             button:SetScript("OnEnter", function(self)
                 ArenaStats:ShowTooltip(self, teamPlayerNames, enemyPlayerNames)
@@ -265,16 +279,11 @@ function ArenaStats:RefreshLayout()
                 ArenaStats:HideTooltip()
             end)
 
-            button.IconTeamPlayerClass1:SetTexture(self:ClassIconId(
-                                                       teamClasses[1]))
-            button.IconTeamPlayerClass2:SetTexture(self:ClassIconId(
-                                                       teamClasses[2]))
-            button.IconTeamPlayerClass3:SetTexture(self:ClassIconId(
-                                                       teamClasses[3]))
-            button.IconTeamPlayerClass4:SetTexture(self:ClassIconId(
-                                                       teamClasses[4]))
-            button.IconTeamPlayerClass5:SetTexture(self:ClassIconId(
-                                                       teamClasses[5]))
+            button.IconTeamPlayerClass1:SetTexture(self:ClassIconId(teamData[1].class))
+            button.IconTeamPlayerClass2:SetTexture(self:ClassIconId(teamData[2].class))
+            button.IconTeamPlayerClass3:SetTexture(self:ClassIconId(teamData[3].class))
+            button.IconTeamPlayerClass4:SetTexture(self:ClassIconId(teamData[4].class))
+            button.IconTeamPlayerClass5:SetTexture(self:ClassIconId(teamData[5].class))
             button.Rating:SetText((row["newTeamRating"] or "-") .. " (" ..
                                       ((row["diffRating"] and row["diffRating"] >
                                           0 and "+" .. row["diffRating"] or
@@ -289,20 +298,24 @@ function ArenaStats:RefreshLayout()
             end
             button.MMR:SetText(row["mmr"] or "-")
 
-            local enemyClasses = {
-                row["enemyPlayerClass1"], row["enemyPlayerClass2"],
-                row["enemyPlayerClass3"], row["enemyPlayerClass4"],
-                row["enemyPlayerClass5"]
-            }
-            table.sort(enemyClasses, function(a, b)
-                return ArenaStats:SortClassTable(a, b)
-            end)
+            button.IconEnemyPlayer1:SetTexture(self:ClassIconId(enemyTeamData[1].class))
+            button.IconEnemyPlayer2:SetTexture(self:ClassIconId(enemyTeamData[2].class))
+            button.IconEnemyPlayer3:SetTexture(self:ClassIconId(enemyTeamData[3].class))
+            button.IconEnemyPlayer4:SetTexture(self:ClassIconId(enemyTeamData[4].class))
+            button.IconEnemyPlayer5:SetTexture(self:ClassIconId(enemyTeamData[5].class))
 
-            button.IconEnemyPlayer1:SetTexture(self:ClassIconId(enemyClasses[1]))
-            button.IconEnemyPlayer2:SetTexture(self:ClassIconId(enemyClasses[2]))
-            button.IconEnemyPlayer3:SetTexture(self:ClassIconId(enemyClasses[3]))
-            button.IconEnemyPlayer4:SetTexture(self:ClassIconId(enemyClasses[4]))
-            button.IconEnemyPlayer5:SetTexture(self:ClassIconId(enemyClasses[5]))
+            button.EnemyRating:SetText((row["enemyNewTeamRating"] or "-") .. " (" ..
+                    ((row["enemyDiffRating"] and row["enemyDiffRating"] >
+                            0 and "+" .. row["enemyDiffRating"] or
+                            row["enemyDiffRating"]) or "0") .. ")")
+            button.EnemyRating:SetTextColor(self:ColorForRating(row["enemyDiffRating"]))
+            if (row["teamColor"] ~= nil and row["winnerColor"] ~= nil) then
+                if (row["teamColor"] ~= row["winnerColor"]) then
+                    button.EnemyRating:SetTextColor(0, 255, 0, 1)
+                else
+                    button.EnemyRating:SetTextColor(255, 0, 0, 1)
+                end
+            end
             button.EnemyMMR:SetText(row["enemyMmr"] or "-")
             button.EnemyFaction:SetTexture(self:FactionIconId(
                                                row["enemyFaction"]))
